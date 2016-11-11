@@ -98,7 +98,7 @@ void setup(){
   set_gyro_registers();                                                     //Set the specific gyro registers.
 
 
-//disable calibration prio start-up in order to accelerate the start-up
+//disable calibration prio start-up in order to accelerate the start-up//
 
 /*
   for (cal_int = 0; cal_int < 1250 ; cal_int ++){                           //Wait 5 seconds before continuing.
