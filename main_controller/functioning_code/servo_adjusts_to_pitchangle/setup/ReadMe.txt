@@ -1,58 +1,38 @@
-Thank you for downloading the YMFC-AL software package. 
+This setup files are for testing and verifying that the Arduino UNO is set-up correctly.
+This files help to verify if the wiring is set-up correctly as well as the internal memory (EEPROM).
 
-Current version: 1.3 October 30, 2016
+Please visit this webpage for further information: http://www.brokking.net/ymfc-al_main.html
 
-Content:
-YMFC-AL_setup.ino
-YMFC-AL_esc_calibrate.ino
-YMFC-AL_Flight_controller.ino
-YMFC_scematic.pdf
+---------------------------------------------------
+quote:
 
-Revision update:
-=====================================================================================================================================================
+Step 3 - Run the setup software
 
-Version 1.3 October 30, 2016
-With the newer Arduino IDE versions (1.6.x and up) the setup program hangs due to optimization of the compiler. This is fixed in this version.
+Remove the props, don't connect the flight battery and upload the setup program to the Arduino Uno. Open the serial monitor at 57600baud and complete the setup by executing the requested actions.
 
-The starting speed of the motors is reduced to 1100us.
+After the setup is completed all the settings are stored in the EEPROM of the Arduino.
 
-Added a new schematic in pdf
-=====================================================================================================================================================
+Check question 2 on the Q&A page if you encounter any problems / errors during the setup.
+Step 5 - Receiver and gyro check
 
-Version 1.2 - July 12, 2016
-The last code did not fix the complete problem so I had to make another adjustment to the code. The acc_x and acc_y values can also be negative so a simple smaller or greater test does not work.
-Therefor I changed the code to:
+To make sure that everything is working correct it's necessary to run some basic checks. Remove the props, disconnect the flight battery and upload the ESC calibration program to the Arduino. Open the serial monitor at 57600baud.
+5.1 Receiver input check
 
-if(abs(acc_y) < acc_total_vector){                                        //Prevent the asin function to produce a NaN
-  angle_pitch_acc = asin((float)acc_y/acc_total_vector)* 57.296;          //Calculate the pitch angle.
-}
-if(abs(acc_x) < acc_total_vector){                                        //Prevent the asin function to produce a NaN
-  angle_roll_acc = asin((float)acc_x/acc_total_vector)* -57.296;          //Calculate the roll angle.
-}
+Send the letter 'r' to start the receiver monitor. Now move the sticks and see if the values on the screen correspond with the movements of the sticks.
 
-This prevents a division by zero and the input value for the asin function will always be smaller than 1.
-=====================================================================================================================================================
+All the channels should read 1000us till 2000us with a center position of 1500 (+/-8).
+5.2 Gyro / accelerometer angle check
 
-Version 1.1 - July 11, 2016
-There was a NaN (not a number) problem in the code. When flying more aggressive the quadcopter could become uncontrolable. The NaN problem is caused by the following:
-When the absolute value of acc_y or acc_x becomes larger that the acc_total_vector the values provided to the asin function is larger than 1 and the asin function produces a NaN.
-It recovers when the acc_total_vector becomes larger that the acc_x or acc_y values. But due to the complimentary filter the NaN error persists.
-This problem will only occur when flying aggressive / fast descents. 
+After the receiver check is completed send the letter 'a' to start the angle check.
 
-I changed the code as followed:
-from:
-angle_pitch_acc = asin((float)acc_y/acc_total_vector)* 57.296;            //Calculate the pitch angle.
-angle_roll_acc = asin((float)acc_x/acc_total_vector)* -57.296;            //Calculate the roll angle.
+Don't move the quadcopter because the gyro needs to calibrate itself. After the calibration the roll and pitch angles are shown. The yaw value is the output of the gyro and will go back to zero if the yaw rotation stops.
 
-to:
-if(acc_y > acc_total_vector){
-  angle_pitch_acc = asin((float)acc_y/acc_total_vector)* 57.296;            //Calculate the pitch angle.
-}
-if(acc_x > acc_total_vector){
-  angle_roll_acc = asin((float)acc_x/acc_total_vector)* -57.296;            //Calculate the roll angle.
-}
-=====================================================================================================================================================
+Check if the angles correspond with the movement of the quadcopter:
 
-Version 1.0 - July 3, 2016
-Release
-=====================================================================================================================================================
+    Nose up is positive pitch and nose down is negative pitch.
+    Left wing up is positive roll and left wing down is negative roll.
+    Nose right is positive yaw and nose left is negative yaw.
+......
+
+
+---------------------------------------------------
